@@ -1,0 +1,49 @@
+mixed-port: 7890
+mode: rule
+log-level: info
+
+# 机场订阅：只提供节点，作为前置
+proxy-providers:
+  机场订阅:
+    type: http
+    url: "https://example.com/your-subscription"
+    interval: 3600
+    path: ./providers/airport.yaml
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 600
+
+proxies:
+  # 落地节点：住宅 / 独享 IP，dialer-proxy 指向“前置节点”分组
+  - name: 美国住宅IP
+    type: socks5
+    server: 1.2.3.4
+    port: 1080
+    username: your-user
+    password: your-pass
+    dialer-proxy: 前置节点
+
+proxy-groups:
+  # 前置：从机场订阅里挑延迟最低的香港/日本节点
+  - name: 前置节点
+    type: url-test
+    use: [机场订阅]
+    filter: "(?i)香港|日本|HK|JP"
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+  - name: 链式出口
+    type: select
+    proxies: [美国住宅IP, 前置节点]
+  - name: 节点选择
+    type: select
+    use: [机场订阅]
+
+rules:
+  - DOMAIN-SUFFIX,linkedin.com,链式出口
+  - DOMAIN-SUFFIX,licdn.com,链式出口
+  - DOMAIN-SUFFIX,tiktok.com,链式出口
+  - DOMAIN-SUFFIX,facebook.com,链式出口
+  - DOMAIN-SUFFIX,ipinfo.io,链式出口
+  - GEOIP,CN,DIRECT
+  - MATCH,节点选择
