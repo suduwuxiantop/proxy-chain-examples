@@ -1,0 +1,17 @@
+prepend-proxies:
+  - name: 美国住宅IP
+    type: socks5
+    server: 1.2.3.4
+    port: 1080
+    username: your-user
+    password: your-pass
+    dialer-proxy: 机场节点名或分组名
+
+append-proxy-groups:
+  - name: 链式出口
+    type: select
+    proxies: [美国住宅IP]
+
+prepend-rules:
+  - DOMAIN-SUFFIX,linkedin.com,链式出口
+  - DOMAIN-SUFFIX,tiktok.com,链式出口
