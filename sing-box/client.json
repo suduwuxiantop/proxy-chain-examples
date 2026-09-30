@@ -1,0 +1,28 @@
+{
+  "outbounds": [
+    {
+      "type": "shadowsocks",
+      "tag": "机场-香港01",
+      "server": "hk.example.com",
+      "server_port": 8388,
+      "method": "aes-128-gcm",
+      "password": "机场节点密码"
+    },
+    {
+      "type": "socks",
+      "tag": "美国住宅IP",
+      "server": "1.2.3.4",
+      "server_port": 1080,
+      "username": "your-user",
+      "password": "your-pass",
+      "detour": "机场-香港01"
+    },
+    { "type": "direct", "tag": "direct" }
+  ],
+  "route": {
+    "rules": [
+      { "domain_suffix": ["linkedin.com", "licdn.com", "tiktok.com", "facebook.com", "ipinfo.io"], "outbound": "美国住宅IP" }
+    ],
+    "final": "机场-香港01"
+  }
+}
