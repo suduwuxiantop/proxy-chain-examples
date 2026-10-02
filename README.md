@@ -44,3 +44,8 @@ SB=/path/to/sing-box MH=/path/to/mihomo bash test/local-chain-test.sh
 ## License
 
 [MIT](LICENSE)
+
+
+## 📢 Telegram 频道
+
+配置示例更新、新教程和常见问题解答会发在 Telegram 频道，欢迎关注：[t.me/suduwuxiantop](https://t.me/suduwuxiantop)
